@@ -27,5 +27,7 @@ android {
 }
 
 dependencies {
-  compile project(':library')
+//  compile project(':library')
+  compile 'com.github.libin1987:TimeSquare:1.0.5'
+      compile 'com.android.support:appcompat-v7:24.0.0'
 }
