@@ -1,44 +1,36 @@
 apply plugin: 'com.android.library'
-apply plugin: 'checkstyle'
 
 apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.libin1987'
-task checkstyle(type: Checkstyle) {
-  configFile rootProject.file('checkstyle.xml')
-  source 'src/main/java'
-  ignoreFailures false
-  showViolations true
-  include '**/*.java'
-
-  classpath = files()
-}
-
-afterEvaluate {
-  if (project.tasks.findByName('check')) {
-    check.dependsOn('checkstyle')
-  }
-}
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
+  compileSdkVersion 24
+  buildToolsVersion "24.0.3"
 
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-  }
+    minSdkVersion 14
+    targetSdkVersion 24
+    versionCode 1
+    versionName "1.0"
 
-  lintOptions {
-    warning 'MissingTranslation'
-    textReport true
-    textOutput 'stdout'
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+  }
+  sourceSets {
+    main {
+      manifest.srcFile 'src/main/AndroidManifest.xml'
+      jniLibs.srcDirs = ['libs']
+    }
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.1'
   }
 }
-
-dependencies {
-  testCompile deps.festandroid
-  testCompile deps.junit
-  testCompile deps.robolectric
-  testCompile deps.intellijannotations
-}
-
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
